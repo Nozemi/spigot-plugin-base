@@ -52,14 +52,13 @@ spigot {
     load = kr.entree.spigradle.attribute.Load.STARTUP
     commands {
         create("heal") {
-            aliases = listOf("t")
             description = "A heal command"
-            permission = "pluginname.heal"
-            usage = "/<command>"
+            permission = "${pluginName.toLowerCase()}.heal"
+            usage = "/heal"
         }
     }
     permissions {
-        create("pluginname.heal") {
+        create("${pluginName.toLowerCase()}.heal") {
             description = "Allows players to use the heal command"
             defaults = "true"
         }
