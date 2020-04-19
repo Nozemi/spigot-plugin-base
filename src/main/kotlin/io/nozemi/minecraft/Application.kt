@@ -1,7 +1,6 @@
-package io.nozemi.minecraft;
+package io.nozemi.minecraft
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication
 
-@SpringBootApplication(scanBasePackages = "io.nozemi.minecraft")
-public class Application {
-}
+@SpringBootApplication(scanBasePackages = ["io.nozemi.minecraft"])
+open class Application

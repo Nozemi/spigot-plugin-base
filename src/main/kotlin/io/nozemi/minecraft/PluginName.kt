@@ -1,27 +1,25 @@
-package io.nozemi.minecraft;
+package io.nozemi.minecraft
 
-import dev.alangomes.springspigot.SpringSpigotInitializer;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.springframework.boot.SpringApplication;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.core.io.DefaultResourceLoader;
-import org.springframework.core.io.ResourceLoader;
+import dev.alangomes.springspigot.SpringSpigotInitializer
+import org.bukkit.plugin.java.JavaPlugin
+import org.springframework.boot.SpringApplication
+import org.springframework.context.ConfigurableApplicationContext
+import org.springframework.core.io.DefaultResourceLoader
+import org.springframework.core.io.ResourceLoader
 
-public class PluginName extends JavaPlugin {
+class PluginName : JavaPlugin() {
 
-    private ConfigurableApplicationContext context;
+    private var context: ConfigurableApplicationContext? = null
 
-    @Override
-    public void onEnable() {
-        ResourceLoader loader = new DefaultResourceLoader(getClassLoader());
-        SpringApplication application = new SpringApplication(loader, Application.class);
-        application.addInitializers(new SpringSpigotInitializer(this));
-        context = application.run();
+    override fun onEnable() {
+        val loader: ResourceLoader = DefaultResourceLoader(classLoader)
+        val application = SpringApplication(loader, Application::class.java)
+        application.addInitializers(SpringSpigotInitializer(this))
+        context = application.run()
     }
 
-    @Override
-    public void onDisable() {
-        context.close();
-        context = null;
+    override fun onDisable() {
+        context!!.close()
+        context = null
     }
 }
