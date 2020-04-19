@@ -1,4 +1,4 @@
-package io.sjokkcraft.minecraft.commands;
+package io.nozemi.minecraft.commands;
 
 import dev.alangomes.springspigot.context.Context;
 import org.bukkit.entity.Player;

@@ -50,12 +50,12 @@ spigot {
         create("heal") {
             aliases = listOf("t")
             description = "A heal command"
-            permission = "sjokkcraft.heal"
+            permission = "pluginname.heal"
             usage = "/<command>"
         }
     }
     permissions {
-        create("sjokkcraft.heal") {
+        create("pluginname.heal") {
             description = "Allows players to use the heal command"
             defaults = "true"
         }
@@ -65,7 +65,7 @@ spigot {
 tasks {
 
     register<Delete>("cleanProject") {
-        group = "sjokkcraft"
+        group = "spigot-plugin"
 
         dependsOn(":clean")
 
@@ -73,7 +73,7 @@ tasks {
     }
 
     register<Jar>("fatJar") {
-        group = "sjokkcraft"
+        group = "spigot-plugin"
 
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
@@ -87,7 +87,7 @@ tasks {
     }
 
     register<Download>("downloadSpigotServer") {
-        group = "sjokkcraft"
+        group = "spigot-plugin"
 
         src("https://cdn.getbukkit.org/spigot/spigot-$spigotVersion.jar")
         dest("./testserver/spigot-$spigotVersion.jar")
@@ -95,7 +95,7 @@ tasks {
     }
 
     register<Copy>("setupTestServer") {
-        group = "sjokkcraft"
+        group = "spigot-plugin"
 
         dependsOn(":downloadSpigotServer")
 
@@ -104,7 +104,7 @@ tasks {
     }
 
     register<Copy>("copyPluginToTestServer") {
-        group = "sjokkcraft"
+        group = "spigot-plugin"
 
         dependsOn(":cleanProject", ":fatJar", ":setupTestServer")
 
@@ -113,7 +113,7 @@ tasks {
     }
 
     register<JavaExec>("runTestServer") {
-        group = "sjokkcraft"
+        group = "spigot-plugin"
 
         dependsOn(":copyPluginToTestServer", ":downloadSpigotServer")
 

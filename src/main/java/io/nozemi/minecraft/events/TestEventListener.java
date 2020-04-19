@@ -1,4 +1,4 @@
-package io.sjokkcraft.minecraft.events;
+package io.nozemi.minecraft.events;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;

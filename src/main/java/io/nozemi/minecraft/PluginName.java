@@ -1,4 +1,4 @@
-package io.sjokkcraft.minecraft;
+package io.nozemi.minecraft;
 
 import dev.alangomes.springspigot.SpringSpigotInitializer;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -7,7 +7,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 
-public class SjokkCraft extends JavaPlugin {
+public class PluginName extends JavaPlugin {
 
     private ConfigurableApplicationContext context;
 

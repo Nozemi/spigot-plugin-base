@@ -8,6 +8,8 @@ I made a few gradle tasks that will make life of plugin developers easier (I thi
 ##### How to use?
 Just clone, fork or download the source code, make sure to change the [gradle.properties](/gradle.properties) file appropriately for your plugin. I personally used 1.14.4, so you should change that if you use something else.
 
+If you change the package structure, make sure to also update the [Application.java](/src/main/java/io/nozemi/minecraft/Application.java) so Spring scans the appropriate package structure.
+
 ##### Gradle Tasks
 - cleanProject - This task cleans the project (also runs the default :clean task).
 - copyPluginToTestServer - This task depends on build, and copies the built plugin JAR to the test server.
