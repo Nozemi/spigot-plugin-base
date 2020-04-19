@@ -41,7 +41,6 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.10")
 
     implementation("dev.alangomes:spigot-spring-boot-starter:0.20.4")
-    implementation(kotlin("stdlib-jdk8"))
 }
 
 spigot {
@@ -124,12 +123,4 @@ tasks {
         workingDir("./testserver/")
         standardInput = System.`in`
     }
-}
-val compileKotlin: KotlinCompile by tasks
-compileKotlin.kotlinOptions {
-    jvmTarget = "1.8"
-}
-val compileTestKotlin: KotlinCompile by tasks
-compileTestKotlin.kotlinOptions {
-    jvmTarget = "1.8"
 }
