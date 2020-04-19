@@ -3,6 +3,7 @@ import de.undercouch.gradle.tasks.download.Download
 
 val spigotVersion: String by project
 val pluginApiVersion: String by project
+val pluginVersion: String by project
 
 buildscript {
     repositories {
@@ -32,7 +33,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly(spigot("1.14.4"))
+    compileOnly(spigot(spigotVersion))
 
     compileOnly("org.projectlombok:lombok:1.18.10")
     annotationProcessor("org.projectlombok:lombok:1.18.10")
@@ -46,20 +47,20 @@ dependencies {
 
 spigot {
     authors = listOf("Nozemi")
-    version = "0.1.0.0"
+    version = pluginVersion
     apiVersion = pluginApiVersion
     load = kr.entree.spigradle.attribute.Load.STARTUP
     commands {
-        create("test") {
+        create("heal") {
             aliases = listOf("t")
-            description = "A test command"
-            permission = "sjokkcraft.test"
+            description = "A heal command"
+            permission = "sjokkcraft.heal"
             usage = "/<command>"
         }
     }
     permissions {
-        create("sjokkcraft.test") {
-            description = "Allows players to use test command"
+        create("sjokkcraft.heal") {
+            description = "Allows players to use the heal command"
             defaults = "true"
         }
     }
