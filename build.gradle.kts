@@ -1,14 +1,26 @@
 import kr.entree.spigradle.kotlin.*
-//import org.springframework.boot.gradle.tasks.bundling.*
+import de.undercouch.gradle.tasks.download.Download
 
-val springVersion = "2.2.6.RELEASE"
+val spigotVersion: String by project
+val pluginApiVersion: String by project
+
+buildscript {
+    repositories {
+        mavenCentral()
+        maven(uri("https://plugins.gradle.org/m2/"))
+    }
+
+    dependencies {
+        classpath("gradle.plugin.com.nemosw:spigot-jar:1.0")
+        classpath("dev.alangomes:spigot-spring-boot-starter:0.20.3")
+    }
+}
 
 plugins {
     kotlin("jvm") version "1.3.70"
     id("kr.entree.spigradle") version "1.2.4"
+    id("de.undercouch.download") version "4.0.4"
 }
-
-apply(from = "gradle/spigot.gradle.kts")
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -35,7 +47,7 @@ dependencies {
 spigot {
     authors = listOf("Nozemi")
     version = "0.1.0.0"
-    apiVersion = "1.14"
+    apiVersion = pluginApiVersion
     load = kr.entree.spigradle.attribute.Load.STARTUP
     commands {
         create("test") {
@@ -53,16 +65,63 @@ spigot {
     }
 }
 
-tasks.register<Jar>("fatJar") {
-    group = "sjokkcraft"
+tasks {
 
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    register<Delete>("cleanProject") {
+        group = "sjokkcraft"
 
-    from(configurations.runtimeClasspath.get()
-            .onEach { println("add from dependencies: ${it.name}") }
-            .map { if (it.isDirectory) it else zipTree(it) })
+        dependsOn(":clean")
 
-    val sourcesMain = sourceSets.main.get()
-    sourcesMain.allSource.forEach { println("add from sources: ${it.name}") }
-    from(sourcesMain.output)
+        delete(file("./testserver"))
+    }
+
+    register<Jar>("fatJar") {
+        group = "sjokkcraft"
+
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+        from(configurations.runtimeClasspath.get()
+                .onEach { println("add from dependencies: ${it.name}") }
+                .map { if (it.isDirectory) it else zipTree(it) })
+
+        val sourcesMain = sourceSets.main.get()
+        sourcesMain.allSource.forEach { println("add from sources: ${it.name}") }
+        from(sourcesMain.output)
+    }
+
+    register<Download>("downloadSpigotServer") {
+        group = "sjokkcraft"
+
+        src("https://cdn.getbukkit.org/spigot/spigot-$spigotVersion.jar")
+        dest("./testserver/spigot-$spigotVersion.jar")
+        overwrite(false)
+    }
+
+    register<Copy>("setupTestServer") {
+        group = "sjokkcraft"
+
+        dependsOn(":downloadSpigotServer")
+
+        from(file("./config/devserver"))
+        into(file("./testserver"))
+    }
+
+    register<Copy>("copyPluginToTestServer") {
+        group = "sjokkcraft"
+
+        dependsOn(":cleanProject", ":fatJar", ":setupTestServer")
+
+        from(file("./build/libs/SjokkCraft.jar"))
+        into(file("./testserver/plugins"))
+    }
+
+    register<JavaExec>("runTestServer") {
+        group = "sjokkcraft"
+
+        dependsOn(":copyPluginToTestServer", ":downloadSpigotServer")
+
+        classpath(files("./testserver/spigot-$spigotVersion.jar"))
+        workingDir("./testserver/")
+        standardInput = System.`in`
+    }
 }
