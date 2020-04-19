@@ -1,9 +1,11 @@
 import kr.entree.spigradle.kotlin.*
 import de.undercouch.gradle.tasks.download.Download
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val spigotVersion: String by project
 val pluginApiVersion: String by project
 val pluginVersion: String by project
+val pluginName: String by project
 
 buildscript {
     repositories {
@@ -39,10 +41,12 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.10")
 
     implementation("dev.alangomes:spigot-spring-boot-starter:0.20.4")
+    implementation(kotlin("stdlib-jdk8"))
 }
 
 spigot {
     authors = listOf("Nozemi")
+    name = pluginName
     version = pluginVersion
     apiVersion = pluginApiVersion
     load = kr.entree.spigradle.attribute.Load.STARTUP
@@ -108,7 +112,7 @@ tasks {
 
         dependsOn(":cleanProject", ":fatJar", ":setupTestServer")
 
-        from(file("./build/libs/SjokkCraft.jar"))
+        from(file("./build/libs/$pluginName.jar"))
         into(file("./testserver/plugins"))
     }
 
@@ -121,4 +125,12 @@ tasks {
         workingDir("./testserver/")
         standardInput = System.`in`
     }
+}
+val compileKotlin: KotlinCompile by tasks
+compileKotlin.kotlinOptions {
+    jvmTarget = "1.8"
+}
+val compileTestKotlin: KotlinCompile by tasks
+compileTestKotlin.kotlinOptions {
+    jvmTarget = "1.8"
 }
