@@ -41,10 +41,6 @@ dependencies {
     implementation("dev.alangomes:spigot-spring-boot-starter:0.20.4")
 }
 
-//tasks.getByName<BootJar>("bootJar") {
-//    mainClassName = "io.sjokkcraft.minecraft.SjokkCraft"
-//}
-
 spigot {
     authors = listOf("Nozemi")
     version = pluginVersion
